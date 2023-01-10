@@ -58,7 +58,7 @@ class CustomEditTextPassword : AppCompatEditText {
         super.onDraw(canvas)
         hint = "Masukkan Password Anda"
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-        setPadding(16, 16, 16, 16)
+        setPadding(24, 24, 24, 24)
     }
 
 }

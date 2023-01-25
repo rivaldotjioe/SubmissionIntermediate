@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityMainBinding
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
+import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        startActivity(Intent(this, AddStoryActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 }

@@ -1,4 +1,4 @@
-package com.rivaldo.submissionintermediate.data.remote
+package com.rivaldo.submissionintermediate.domain
 
 sealed class Resource<T>(
     val data: T? = null,

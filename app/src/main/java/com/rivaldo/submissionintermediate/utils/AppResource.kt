@@ -1,6 +1,7 @@
 package com.rivaldo.submissionintermediate.utils
 
 import android.app.Application
+import com.rivaldo.submissionintermediate.di.localDataModule
 import com.rivaldo.submissionintermediate.di.networkModule
 import com.rivaldo.submissionintermediate.di.repositoryModule
 import com.rivaldo.submissionintermediate.di.viewModelModule
@@ -18,6 +19,7 @@ class AppResource : Application() {
             modules(
                 listOf(
                     networkModule,
+                    localDataModule,
                     repositoryModule,
                     viewModelModule
                 )

@@ -1,7 +1,8 @@
 package com.rivaldo.submissionintermediate.data.remote.repository
 
-import com.rivaldo.submissionintermediate.data.remote.Resource
+import com.rivaldo.submissionintermediate.data.remote.ApiResponse
 import com.rivaldo.submissionintermediate.data.remote.api.RemoteDataSource
+import com.rivaldo.submissionintermediate.domain.Resource
 import com.rivaldo.submissionintermediate.domain.model.StandardModel
 import com.rivaldo.submissionintermediate.domain.repoInterface.IRegisterRepository
 import com.rivaldo.submissionintermediate.utils.DataMapper.toStandardModel
@@ -18,13 +19,13 @@ class RegisterRepository(val remoteDataSource: RemoteDataSource) : IRegisterRepo
             try {
                 remoteDataSource.register(name, password, email).collect { resource ->
                     when (resource) {
-                        is Resource.Success -> {
+                        is ApiResponse.Success -> {
                             emit(Resource.Success(data = resource.data.toStandardModel()))
                         }
-                        is Resource.Error -> {
+                        is ApiResponse.Error -> {
                             emit(Resource.Error(message = resource.message.toString()))
                         }
-                        is Resource.Loading -> {
+                        is ApiResponse.Loading -> {
                             emit(Resource.Loading(data = null))
                         }
                     }

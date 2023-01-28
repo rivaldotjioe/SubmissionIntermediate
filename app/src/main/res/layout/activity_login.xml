@@ -24,7 +24,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
         android:hint="Password"
         style="@style/EditTextDefault"
         android:minHeight="56dp"
@@ -53,7 +52,6 @@
         android:layout_marginEnd="32dp"
         style="@style/EditTextDefault"
         android:padding="12dp"
-        android:ems="10"
         android:hint="Email"
         android:textColor="?android:textColorPrimary"
         android:inputType="textEmailAddress"
@@ -84,4 +82,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtOfferRegister" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.538" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

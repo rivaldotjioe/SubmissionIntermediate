@@ -1,17 +1,15 @@
 package com.rivaldo.submissionintermediate.ui.register
 
 import android.content.Intent
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.viewModelScope
-import com.rivaldo.submissionintermediate.R
-import com.rivaldo.submissionintermediate.data.remote.Resource
+import com.rivaldo.submissionintermediate.data.remote.ApiResponse
 import com.rivaldo.submissionintermediate.databinding.ActivityRegisterBinding
+import com.rivaldo.submissionintermediate.domain.Resource
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

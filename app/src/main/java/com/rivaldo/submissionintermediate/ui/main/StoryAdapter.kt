@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.rivaldo.submissionintermediate.databinding.ListStoryBinding
 import com.rivaldo.submissionintermediate.domain.model.StoryModel
 
 class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     val listStory : MutableList<StoryModel> = mutableListOf()
+    lateinit var onItemClick: ((StoryModel) -> Unit)
 
     fun setListStory(listStory: List<StoryModel>) {
         this.listStory.clear()
@@ -16,11 +18,24 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class StoryViewHolder(val binding: ListStoryBinding): RecyclerView.ViewHolder(binding.root) {
+    @JvmName("setOnItemClick1")
+    fun setOnItemClick(onItemClick: (StoryModel) -> Unit) {
+        this.onItemClick = onItemClick
+    }
+
+    inner class StoryViewHolder(val binding: ListStoryBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(storyModel: StoryModel){
             binding.tvItemName.text = storyModel.name
+            Glide.with(itemView.context)
+                .load(storyModel.photoUrl)
+                .into(binding.ivItemPhoto)
             //bind photo
+            itemView.setOnClickListener {
+                if (::onItemClick.isInitialized){
+                    onItemClick(storyModel)
+                }
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityMainBinding
 import com.rivaldo.submissionintermediate.domain.Resource
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
+import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,11 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(false)
             this.adapter = rvAdapter
         }
+
+        rvAdapter.setOnItemClick { storyModel ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.EXTRA_DATA, storyModel)
+            startActivity(intent) }
     }
 
     private fun getListStory() {

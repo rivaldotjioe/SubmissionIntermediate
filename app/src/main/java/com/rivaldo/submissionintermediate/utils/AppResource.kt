@@ -1,6 +1,8 @@
 package com.rivaldo.submissionintermediate.utils
 
 import android.app.Application
+import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
 import com.rivaldo.submissionintermediate.di.localDataModule
 import com.rivaldo.submissionintermediate.di.networkModule
 import com.rivaldo.submissionintermediate.di.repositoryModule
@@ -13,6 +15,7 @@ import org.koin.core.logger.Level
 class AppResource : Application() {
     override fun onCreate() {
         super.onCreate()
+        Glide.init(this, GlideBuilder())
         startKoin {
             androidLogger(Level.NONE)
             androidContext(this@AppResource)

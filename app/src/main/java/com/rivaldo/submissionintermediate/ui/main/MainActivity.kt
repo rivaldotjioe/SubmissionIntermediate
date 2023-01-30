@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rivaldo.submissionintermediate.R
@@ -40,10 +41,14 @@ class MainActivity : AppCompatActivity() {
             this.adapter = rvAdapter
         }
 
-        rvAdapter.setOnItemClick { storyModel ->
+        rvAdapter.setOnItemClick { storyModel, activityOptionsCompat ->
             val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra(DetailActivity.EXTRA_DATA, storyModel)
-            startActivity(intent) }
+            startActivity(
+                intent,
+                activityOptionsCompat.toBundle()
+            )
+        }
     }
 
     private fun getListStory() {

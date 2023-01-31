@@ -15,6 +15,7 @@ import com.rivaldo.submissionintermediate.data.remote.repository.StoriesReposito
 import com.rivaldo.submissionintermediate.domain.repoInterface.ILoginRepository
 import com.rivaldo.submissionintermediate.domain.repoInterface.IRegisterRepository
 import com.rivaldo.submissionintermediate.domain.repoInterface.IStoriesRepository
+import com.rivaldo.submissionintermediate.ui.addstory.AddStoryViewModel
 import com.rivaldo.submissionintermediate.ui.login.LoginViewModel
 import com.rivaldo.submissionintermediate.ui.main.MainViewModel
 import com.rivaldo.submissionintermediate.ui.register.RegisterViewModel
@@ -61,4 +62,5 @@ val viewModelModule = module {
     viewModel { RegisterViewModel(get()) }
     viewModel { LoginViewModel(repository = get(), preferences = get()) }
     viewModel { MainViewModel(preferences = get(), storiesRepository = get()) }
+    viewModel { AddStoryViewModel(get(), get()) }
 }

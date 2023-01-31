@@ -4,13 +4,12 @@ import com.rivaldo.submissionintermediate.data.remote.model.ResponseGetAllStorie
 import com.rivaldo.submissionintermediate.data.remote.model.ResponseGetDetailStories
 import com.rivaldo.submissionintermediate.data.remote.model.ResponseLogin
 import com.rivaldo.submissionintermediate.data.remote.model.ResponseStandard
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -29,14 +28,12 @@ interface ApiService {
         @Field("password") password: String
     ) : ResponseLogin
 
+    @Multipart
     @POST("stories")
     suspend fun addNewStories(
         @Header("Authorization") token: String,
-        @Header("Content-Type") contentType: String = "multipart/form-data",
-        @Field("description") title: String,
-        @Body photo: MultipartBody.Part,
-        @Field("lat") lat: Float? = null,
-        @Field("lon") lon: Float? = null,
+        @Part("description") description: RequestBody,
+        @Part photo: MultipartBody.Part,
     ) : ResponseStandard
 
     @GET("stories")

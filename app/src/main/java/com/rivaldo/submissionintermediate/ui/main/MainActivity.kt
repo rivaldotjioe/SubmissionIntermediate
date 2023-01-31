@@ -3,9 +3,14 @@ package com.rivaldo.submissionintermediate.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rivaldo.submissionintermediate.R
@@ -32,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         runBlocking { checkIsLogin() }
         initializeRecyclerView()
         getListStory()
+        setupMenu()
     }
 
     private fun initializeRecyclerView() {
@@ -49,6 +55,30 @@ class MainActivity : AppCompatActivity() {
                 activityOptionsCompat.toBundle()
             )
         }
+    }
+
+    private fun setupMenu(){
+        (this as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.main_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.add_story -> {
+                        val intent = Intent(this@MainActivity, AddStoryActivity::class.java )
+                        startActivity(intent)
+                        return true
+                    }
+                    R.id.logout -> {
+                        viewModel.logout()
+                        return true
+                    }
+                    else -> false
+                }
+            }
+        })
     }
 
     private fun getListStory() {

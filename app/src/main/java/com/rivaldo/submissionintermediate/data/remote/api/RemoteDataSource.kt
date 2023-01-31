@@ -4,9 +4,10 @@ import com.rivaldo.submissionintermediate.data.remote.ApiResponse
 import com.rivaldo.submissionintermediate.data.remote.model.ResponseGetAllStories
 import com.rivaldo.submissionintermediate.data.remote.model.ResponseLogin
 import com.rivaldo.submissionintermediate.data.remote.model.ResponseStandard
-import com.rivaldo.submissionintermediate.domain.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class RemoteDataSource(private val apiService: ApiService) {
     suspend fun register(
@@ -59,6 +60,22 @@ class RemoteDataSource(private val apiService: ApiService) {
                 } else {
                     emit(ApiResponse.Error(data = null, message = responseGetAllStories.message.toString()))
                 }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
+            }
+        }
+    }
+
+    suspend fun addNewStories(token: String, description: RequestBody, image: MultipartBody.Part) : Flow<ApiResponse<ResponseStandard>> {
+        return flow {
+            try {
+                val responseAddStory = apiService.addNewStories(token =  "Bearer $token", description = description, photo = image)
+                if (responseAddStory.error == false) {
+                    emit(ApiResponse.Success(data = responseAddStory))
+                } else {
+                    emit(ApiResponse.Error(data = null, message = responseAddStory.message.toString()))
+                }
+
             } catch (e: Exception) {
                 emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
             }

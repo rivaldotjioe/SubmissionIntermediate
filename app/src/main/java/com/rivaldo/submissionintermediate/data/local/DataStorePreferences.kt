@@ -68,6 +68,13 @@ class DataStorePreferences private constructor(val dataStore: DataStore<Preferen
         }
     }
 
+    suspend fun clearDataLogout() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+            preferences[IS_LOGIN_KEY] = false
+        }
+    }
+
     companion object {
         public const val PREFERENCES_NAME = "com.rivaldo.submissionintermediate"
 

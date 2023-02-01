@@ -108,6 +108,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getListStory()
+    }
+
     private fun checkIsLogin() {
         viewModel.viewModelScope.launch {
             viewModel.checkIsLogin().collect { isLoggedIn ->

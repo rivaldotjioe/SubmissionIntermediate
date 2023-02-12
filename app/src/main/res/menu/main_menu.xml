@@ -18,4 +18,12 @@
         android:iconTint="@color/white"
         app:iconifiedByDefault="true"
         />
+
+    <item android:id="@+id/map"
+        android:title="Refresh"
+        app:showAsAction="always|collapseActionView"
+        android:icon="@drawable/baseline_map_24"
+        android:iconTint="@color/white"
+        app:iconifiedByDefault="true"
+        />
 </menu>

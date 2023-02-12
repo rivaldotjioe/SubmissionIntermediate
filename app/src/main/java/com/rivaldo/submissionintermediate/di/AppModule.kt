@@ -18,6 +18,7 @@ import com.rivaldo.submissionintermediate.domain.repoInterface.IStoriesRepositor
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryViewModel
 import com.rivaldo.submissionintermediate.ui.login.LoginViewModel
 import com.rivaldo.submissionintermediate.ui.main.MainViewModel
+import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsViewModel
 import com.rivaldo.submissionintermediate.ui.register.RegisterViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -55,7 +56,7 @@ val repositoryModule = module {
     single { RemoteDataSource(get()) }
     single<IRegisterRepository> { RegisterRepository(get()) }
     single<ILoginRepository> { LoginRepository(get()) }
-    single<IStoriesRepository> { StoriesRepository(get()) }
+    single<IStoriesRepository> { StoriesRepository(get(), get()) }
 }
 
 val viewModelModule = module {
@@ -63,4 +64,5 @@ val viewModelModule = module {
     viewModel { LoginViewModel(repository = get(), preferences = get()) }
     viewModel { MainViewModel(preferences = get(), storiesRepository = get()) }
     viewModel { AddStoryViewModel(get(), get()) }
+    viewModel { ListStoryMapsViewModel(get(), get())}
 }

@@ -13,16 +13,12 @@ import com.rivaldo.submissionintermediate.databinding.ListStoryBinding
 import com.rivaldo.submissionintermediate.domain.model.StoryModel
 import de.hdodenhof.circleimageview.CircleImageView
 import android.util.Pair
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 
-class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
-    val listStory: MutableList<StoryModel> = mutableListOf()
+class StoryAdapter : PagingDataAdapter<StoryModel, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
     lateinit var onItemClick: ((StoryModel, ActivityOptions) -> Unit)
 
-    fun setListStory(listStory: List<StoryModel>) {
-        this.listStory.clear()
-        this.listStory.addAll(listStory)
-        notifyDataSetChanged()
-    }
 
     @JvmName("setOnItemClick1")
     fun setOnItemClick(onItemClick: (StoryModel, ActivityOptions) -> Unit) {
@@ -57,10 +53,21 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
         return StoryViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = listStory.size
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        holder.bind(listStory[position])
+        getItem(position)?.let { holder.bind(it) }
+    }
+
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryModel>() {
+            override fun areItemsTheSame(oldItem: StoryModel, newItem: StoryModel): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: StoryModel, newItem: StoryModel): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
     }
 
 

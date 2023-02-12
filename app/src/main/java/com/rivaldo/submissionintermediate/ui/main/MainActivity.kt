@@ -19,9 +19,11 @@ import com.rivaldo.submissionintermediate.domain.Resource
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
 import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
+import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,6 +77,11 @@ class MainActivity : AppCompatActivity() {
                         viewModel.logout()
                         return true
                     }
+                    R.id.map -> {
+                        val intent = Intent(this@MainActivity, ListStoryMapsActivity::class.java )
+                        startActivity(intent)
+                        return true
+                    }
                     else -> false
                 }
             }
@@ -83,27 +90,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getListStory() {
         viewModel.viewModelScope.launch(Dispatchers.IO) {
-            viewModel.getListStory().collect { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-                        binding.progressBar3.visibility = View.VISIBLE
-                    }
-                    is Resource.Success -> {
-                        binding.progressBar3.visibility = View.GONE
-                        resource.data?.let {
-                            runOnUiThread { rvAdapter.setListStory(it) }
-
-                        }
-                    }
-                    is Resource.Error -> {
-                        binding.progressBar3.visibility = View.GONE
-                        runOnUiThread {
-                            Toast.makeText(this@MainActivity, resource.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
-                    }
-                }
+            viewModel.storiesFlow.collectLatest {
+                rvAdapter.submitData(lifecycle, it)
             }
         }
     }

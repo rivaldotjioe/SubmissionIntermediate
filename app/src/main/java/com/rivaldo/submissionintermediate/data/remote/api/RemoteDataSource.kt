@@ -23,7 +23,12 @@ class RemoteDataSource(private val apiService: ApiService) {
                 if (responseRegister.error == false) {
                     emit(ApiResponse.Success(data = responseRegister))
                 } else {
-                    emit(ApiResponse.Error(data = null, message = responseRegister.message.toString()))
+                    emit(
+                        ApiResponse.Error(
+                            data = null,
+                            message = responseRegister.message.toString()
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
@@ -31,10 +36,11 @@ class RemoteDataSource(private val apiService: ApiService) {
 
         }
     }
+
     suspend fun login(
         email: String,
         password: String
-        ) : Flow<ApiResponse<ResponseLogin>> {
+    ): Flow<ApiResponse<ResponseLogin>> {
         return flow {
             try {
                 val responseLogin = apiService.login(email = email, password = password)
@@ -51,14 +57,19 @@ class RemoteDataSource(private val apiService: ApiService) {
         }
     }
 
-    suspend fun getAllStories(token: String) : Flow<ApiResponse<ResponseGetAllStories>> {
+    suspend fun getAllStories(token: String): Flow<ApiResponse<ResponseGetAllStories>> {
         return flow {
             try {
                 val responseGetAllStories = apiService.getAllStories(token = "Bearer $token")
                 if (responseGetAllStories.error == false) {
                     emit(ApiResponse.Success(data = responseGetAllStories))
                 } else {
-                    emit(ApiResponse.Error(data = null, message = responseGetAllStories.message.toString()))
+                    emit(
+                        ApiResponse.Error(
+                            data = null,
+                            message = responseGetAllStories.message.toString()
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
@@ -66,14 +77,97 @@ class RemoteDataSource(private val apiService: ApiService) {
         }
     }
 
-    suspend fun addNewStories(token: String, description: RequestBody, image: MultipartBody.Part) : Flow<ApiResponse<ResponseStandard>> {
+    suspend fun getAllStoriesWithLocation(token: String): Flow<ApiResponse<ResponseGetAllStories>> {
         return flow {
             try {
-                val responseAddStory = apiService.addNewStories(token =  "Bearer $token", description = description, photo = image)
+                val responseGetAllStories =
+                    apiService.getAllStoriesWithLocation(token = "Bearer $token")
+                if (responseGetAllStories.error == false) {
+                    emit(ApiResponse.Success(data = responseGetAllStories))
+                } else {
+                    emit(
+                        ApiResponse.Error(
+                            data = null,
+                            message = responseGetAllStories.message.toString()
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
+            }
+        }
+    }
+
+    suspend fun getAllStoriesPaging(
+        token: String,
+        page: Int,
+        size: Int
+    ): Flow<ApiResponse<ResponseGetAllStories>> {
+        return flow {
+            try {
+                val responseGetAllStories =
+                    apiService.getAllStories(token = "Bearer $token", page = page, size = size)
+                if (responseGetAllStories.error == false) {
+                    emit(ApiResponse.Success(data = responseGetAllStories))
+                } else {
+                    emit(
+                        ApiResponse.Error(
+                            data = null,
+                            message = responseGetAllStories.message.toString()
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
+            }
+        }
+    }
+
+    suspend fun getAllStories(
+        token: String,
+        page: Int,
+        location: Int
+    ): Flow<ApiResponse<ResponseGetAllStories>> {
+        return flow {
+            try {
+                val responseGetAllStories = apiService.getAllStories(token = "Bearer $token")
+                if (responseGetAllStories.error == false) {
+                    emit(ApiResponse.Success(data = responseGetAllStories))
+                } else {
+                    emit(
+                        ApiResponse.Error(
+                            data = null,
+                            message = responseGetAllStories.message.toString()
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(data = null, message = e.message ?: "Error Occurred!"))
+            }
+        }
+    }
+
+    suspend fun addNewStories(
+        token: String,
+        description: RequestBody,
+        image: MultipartBody.Part
+    ): Flow<ApiResponse<ResponseStandard>> {
+        return flow {
+            try {
+                val responseAddStory = apiService.addNewStories(
+                    token = "Bearer $token",
+                    description = description,
+                    photo = image
+                )
                 if (responseAddStory.error == false) {
                     emit(ApiResponse.Success(data = responseAddStory))
                 } else {
-                    emit(ApiResponse.Error(data = null, message = responseAddStory.message.toString()))
+                    emit(
+                        ApiResponse.Error(
+                            data = null,
+                            message = responseAddStory.message.toString()
+                        )
+                    )
                 }
 
             } catch (e: Exception) {

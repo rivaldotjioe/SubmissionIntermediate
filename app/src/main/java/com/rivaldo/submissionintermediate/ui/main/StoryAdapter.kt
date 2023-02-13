@@ -67,6 +67,7 @@ class StoryAdapter : PagingDataAdapter<StoryModel, StoryAdapter.StoryViewHolder>
             override fun areContentsTheSame(oldItem: StoryModel, newItem: StoryModel): Boolean {
                 return oldItem.id == newItem.id
             }
+
         }
     }
 

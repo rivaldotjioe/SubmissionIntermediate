@@ -65,6 +65,11 @@ class MainViewModelTest{
         assertEquals(dummyStory, differ.snapshot())
         assertEquals(dummyStory.size, differ.snapshot().size)
         assertEquals(dummyStory[0].id, differ.snapshot()[0]?.id)
+        assertEquals(dummyStory[0].name, differ.snapshot()[0]?.name)
+        assertEquals(dummyStory[0].description, differ.snapshot()[0]?.description)
+        assertEquals(dummyStory[0].photoUrl, differ.snapshot()[0]?.photoUrl)
+        assertEquals(dummyStory[0].lat, differ.snapshot()[0]?.lat)
+        assertEquals(dummyStory[0].lon, differ.snapshot()[0]?.lon)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

@@ -25,6 +25,7 @@ class MainViewModel(
 //        runBlocking {
             token = preferences.getToken().first()
 //        }
+
         return token
     }
 

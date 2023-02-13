@@ -11,8 +11,11 @@ import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityMainBinding
 import com.rivaldo.submissionintermediate.domain.Resource
@@ -22,6 +25,7 @@ import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -57,6 +61,13 @@ class MainActivity : AppCompatActivity() {
                 activityOptionsCompat.toBundle()
             )
         }
+
+        rvAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.rvStory.scrollToPosition(0)
+            }
+        })
     }
 
     private fun setupMenu(){
@@ -98,7 +109,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        getListStory()
+        rvAdapter.refresh()
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
     private fun checkIsLogin() {

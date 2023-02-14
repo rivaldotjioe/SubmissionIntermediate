@@ -24,18 +24,16 @@ import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModel()
     private val rvAdapter: StoryAdapter by lazy { StoryAdapter() }
+    private val linearLayoutManager: LinearLayoutManager by lazy { LinearLayoutManager(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeRecyclerView() {
         binding.rvStory.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = linearLayoutManager
             setHasFixedSize(false)
             this.adapter = rvAdapter
         }
@@ -61,13 +59,6 @@ class MainActivity : AppCompatActivity() {
                 activityOptionsCompat.toBundle()
             )
         }
-
-        rvAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                binding.rvStory.scrollToPosition(0)
-            }
-        })
     }
 
     private fun setupMenu(){
@@ -110,8 +101,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         rvAdapter.refresh()
-    }
+        lifecycleScope.launch(Dispatchers.Main) {
+            delay(200)
+            binding.rvStory.layoutManager?.scrollToPosition(0)
+        }
 
+    }
     override fun onPause() {
         super.onPause()
     }

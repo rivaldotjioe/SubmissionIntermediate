@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityLoginBinding
@@ -11,8 +12,8 @@ import com.rivaldo.submissionintermediate.domain.Resource
 import com.rivaldo.submissionintermediate.domain.model.LoginModel
 import com.rivaldo.submissionintermediate.ui.main.MainActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
     private fun onLogin(onLoginSuccess: (LoginModel) -> Unit, onLoginFailed: (String) -> Unit, onLoading: () -> Unit) {
         val email = binding.edLoginEmail.text.toString()
         val password = binding.edLoginPassword.text.toString()
-        viewModel.viewModelScope.launch {
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
             viewModel.login(email = email, password = password).collect { resource ->
                 when(resource) {
                     is Resource.Success -> {
@@ -52,19 +53,33 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onSuccessLogin(loginModel: LoginModel) {
-        viewModel.saveLoginData(loginModel)
-        binding.progressBar2.visibility = android.view.View.GONE
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        lateinit var loginSaveUnit : Deferred<Unit>
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                loginSaveUnit = async { viewModel.saveLoginData(loginModel) }
+
+            }
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            if (loginSaveUnit.isCompleted) {
+                binding.progressBar2.visibility = android.view.View.GONE
+                startActivity(intent)
+                finish()
+            }
+        }
+
     }
 
     private fun onFailedLogin(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        binding.progressBar2.visibility = android.view.View.GONE
+        lifecycleScope.launch(Dispatchers.Main) {
+            Toast.makeText(this@LoginActivity, message, Toast.LENGTH_LONG).show()
+            binding.progressBar2.visibility = android.view.View.GONE
+        }
     }
 
     private fun onLoading() {
-        binding.progressBar2.visibility = android.view.View.VISIBLE
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.progressBar2.visibility = android.view.View.VISIBLE
+        }
+
     }
 }

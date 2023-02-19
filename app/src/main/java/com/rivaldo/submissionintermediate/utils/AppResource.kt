@@ -3,10 +3,7 @@ package com.rivaldo.submissionintermediate.utils
 import android.app.Application
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
-import com.rivaldo.submissionintermediate.di.localDataModule
-import com.rivaldo.submissionintermediate.di.networkModule
-import com.rivaldo.submissionintermediate.di.repositoryModule
-import com.rivaldo.submissionintermediate.di.viewModelModule
+import com.rivaldo.submissionintermediate.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -24,6 +21,7 @@ class AppResource : Application() {
                     networkModule,
                     localDataModule,
                     repositoryModule,
+                    interactorModule,
                     viewModelModule
                 )
             )

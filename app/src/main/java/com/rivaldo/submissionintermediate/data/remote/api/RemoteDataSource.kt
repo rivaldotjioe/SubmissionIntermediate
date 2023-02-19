@@ -42,6 +42,7 @@ class RemoteDataSource(private val apiService: ApiService) {
         password: String
     ): Flow<ApiResponse<ResponseLogin>> {
         return flow {
+            emit(ApiResponse.Loading(data = null))
             try {
                 val responseLogin = apiService.login(email = email, password = password)
                 if (responseLogin.error == false) {

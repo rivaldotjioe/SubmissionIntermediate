@@ -12,9 +12,11 @@ import com.rivaldo.submissionintermediate.data.remote.api.RemoteDataSource
 import com.rivaldo.submissionintermediate.data.remote.repository.LoginRepository
 import com.rivaldo.submissionintermediate.data.remote.repository.RegisterRepository
 import com.rivaldo.submissionintermediate.data.remote.repository.StoriesRepository
+import com.rivaldo.submissionintermediate.domain.interactor.*
 import com.rivaldo.submissionintermediate.domain.repoInterface.ILoginRepository
 import com.rivaldo.submissionintermediate.domain.repoInterface.IRegisterRepository
 import com.rivaldo.submissionintermediate.domain.repoInterface.IStoriesRepository
+import com.rivaldo.submissionintermediate.domain.useCase.*
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryViewModel
 import com.rivaldo.submissionintermediate.ui.login.LoginViewModel
 import com.rivaldo.submissionintermediate.ui.main.MainViewModel
@@ -59,10 +61,32 @@ val repositoryModule = module {
     single<IStoriesRepository> { StoriesRepository(get(), get()) }
 }
 
+val interactorModule = module {
+    factory<LoginUseCase> {
+        LoginInteractor(get(), get())
+    }
+
+    factory<HomeListStoryUseCase> {
+        HomeListStoryInteractor(get(), get())
+    }
+
+    factory <AddStoryUseCase> {
+        AddStoryInteractor(get(), get())
+    }
+
+    factory <StoryMapsUseCase>{
+        StoryMapsInteractor(get(), get())
+    }
+
+    factory <RegisterUseCase> {
+        RegisterInteractor(get())
+    }
+}
+
 val viewModelModule = module {
     viewModel { RegisterViewModel(get()) }
-    viewModel { LoginViewModel(repository = get(), preferences = get()) }
-    viewModel { MainViewModel(preferences = get(), storiesRepository = get()) }
-    viewModel { AddStoryViewModel(get(), get()) }
-    viewModel { ListStoryMapsViewModel(get(), get())}
+    viewModel { LoginViewModel(get()) }
+    viewModel { MainViewModel(get()) }
+    viewModel { AddStoryViewModel(get()) }
+    viewModel { ListStoryMapsViewModel(get())}
 }

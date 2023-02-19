@@ -5,21 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.rivaldo.submissionintermediate.data.local.DataStorePreferences
 import com.rivaldo.submissionintermediate.domain.model.LoginModel
 import com.rivaldo.submissionintermediate.domain.repoInterface.ILoginRepository
+import com.rivaldo.submissionintermediate.domain.useCase.LoginUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class LoginViewModel(val repository: ILoginRepository, val preferences: DataStorePreferences) :
-    ViewModel() {
-    suspend fun login(email: String, password: String) = repository.login(email, password)
-    fun saveLoginData(loginModel: LoginModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            async {
-                preferences.setUserID(loginModel.userId)
-                preferences.setToken(loginModel.token)
-                preferences.setUserName(loginModel.name)
-                preferences.setIsLoggedIn(true)
-            }
-        }
+class LoginViewModel(val useCase: LoginUseCase) : ViewModel() {
+    suspend fun login(email: String, password: String) = useCase.login(email, password)
+    suspend fun saveLoginData(loginModel: LoginModel) {
+        useCase.saveLoginData(loginModel)
     }
 }

@@ -1,13 +1,11 @@
 package com.rivaldo.submissionintermediate.ui.detail
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.rivaldo.submissionintermediate.R
+import com.rivaldo.core.domain.model.StoryModel
 import com.rivaldo.submissionintermediate.databinding.ActivityDetailBinding
-import com.rivaldo.submissionintermediate.domain.model.StoryModel
-import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
 
 class DetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityDetailBinding

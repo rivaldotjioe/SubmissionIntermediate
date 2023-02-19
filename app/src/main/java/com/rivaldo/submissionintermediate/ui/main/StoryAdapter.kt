@@ -2,19 +2,16 @@ package com.rivaldo.submissionintermediate.ui.main
 
 import android.app.Activity
 import android.app.ActivityOptions
+import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.rivaldo.submissionintermediate.R
-import com.rivaldo.submissionintermediate.databinding.ListStoryBinding
-import com.rivaldo.submissionintermediate.domain.model.StoryModel
-import de.hdodenhof.circleimageview.CircleImageView
-import android.util.Pair
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.rivaldo.core.domain.model.StoryModel
+import com.rivaldo.submissionintermediate.databinding.ListStoryBinding
 
 class StoryAdapter : PagingDataAdapter<StoryModel, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
     lateinit var onItemClick: ((StoryModel, ActivityOptions) -> Unit)

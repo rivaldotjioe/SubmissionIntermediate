@@ -1,9 +1,7 @@
 package com.rivaldo.submissionintermediate.ui.addstory
 
 import androidx.lifecycle.ViewModel
-import com.rivaldo.submissionintermediate.data.local.DataStorePreferences
-import com.rivaldo.submissionintermediate.domain.repoInterface.IStoriesRepository
-import com.rivaldo.submissionintermediate.domain.useCase.AddStoryUseCase
+import com.rivaldo.core.domain.useCase.AddStoryUseCase
 import kotlinx.coroutines.flow.first
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

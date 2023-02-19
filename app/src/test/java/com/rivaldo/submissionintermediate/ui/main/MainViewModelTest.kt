@@ -5,12 +5,12 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.rivaldo.submissionintermediate.data.local.DataStorePreferences
-import com.rivaldo.submissionintermediate.data.remote.repository.StoriesRepository
-import com.rivaldo.submissionintermediate.domain.interactor.HomeListStoryInteractor
-import com.rivaldo.submissionintermediate.domain.model.StoryModel
-import com.rivaldo.submissionintermediate.domain.repoInterface.IStoriesRepository
-import com.rivaldo.submissionintermediate.domain.useCase.HomeListStoryUseCase
+import com.rivaldo.core.data.local.DataStorePreferences
+import com.rivaldo.core.data.remote.repository.StoriesRepository
+import com.rivaldo.core.domain.interactor.HomeListStoryInteractor
+import com.rivaldo.core.domain.model.StoryModel
+import com.rivaldo.core.domain.repoInterface.IStoriesRepository
+import com.rivaldo.core.domain.useCase.HomeListStoryUseCase
 import com.rivaldo.submissionintermediate.utils.DataDummy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,7 +38,7 @@ class MainViewModelTest{
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         storiesRepository = mock(StoriesRepository::class.java)
-        preferences = mock(DataStorePreferences::class.java)
+        preferences = mock(com.rivaldo.core.data.local.DataStorePreferences::class.java)
         useCase = HomeListStoryInteractor(storiesRepository, preferences)
         mainViewModel = MainViewModel(useCase)
         `when`(preferences.getToken()).thenReturn(flow {

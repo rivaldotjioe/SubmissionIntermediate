@@ -1,20 +1,18 @@
 package com.rivaldo.submissionintermediate.ui.maps
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.rivaldo.core.domain.Resource
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityListStoryMapsBinding
-import com.rivaldo.submissionintermediate.domain.Resource
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

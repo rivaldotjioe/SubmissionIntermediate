@@ -1,31 +1,23 @@
 package com.rivaldo.submissionintermediate.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
-import androidx.core.app.ActivityOptionsCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityMainBinding
-import com.rivaldo.submissionintermediate.domain.Resource
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
 import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsActivity
-import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

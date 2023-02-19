@@ -1,19 +1,17 @@
 package com.rivaldo.submissionintermediate.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import com.rivaldo.submissionintermediate.R
+import com.rivaldo.core.domain.Resource
+import com.rivaldo.core.domain.model.LoginModel
 import com.rivaldo.submissionintermediate.databinding.ActivityLoginBinding
-import com.rivaldo.submissionintermediate.domain.Resource
-import com.rivaldo.submissionintermediate.domain.model.LoginModel
 import com.rivaldo.submissionintermediate.ui.main.MainActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {

@@ -3,7 +3,11 @@ package com.rivaldo.submissionintermediate.utils
 import android.app.Application
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
-import com.rivaldo.submissionintermediate.di.*
+import com.rivaldo.core.di.localDataModule
+import com.rivaldo.core.di.networkModule
+import com.rivaldo.core.di.repositoryModule
+import com.rivaldo.submissionintermediate.di.interactorModule
+import com.rivaldo.submissionintermediate.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

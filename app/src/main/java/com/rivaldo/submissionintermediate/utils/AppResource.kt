@@ -26,7 +26,7 @@ class AppResource : Application() {
                     localDataModule,
                     repositoryModule,
                     interactorModule,
-                    viewModelModule
+                    viewModelModule,
                 )
             )
         }

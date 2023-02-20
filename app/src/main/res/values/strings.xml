@@ -9,4 +9,5 @@
     <string name="story_fail_upload">Error when uploading stor</string>
     <string name="story_image_not_set">Please take a image to upload !</string>
     <string name="title_activity_list_story_maps">ListStoryMapsActivity</string>
+    <string name="title_favorite">Favorite</string>
 </resources>

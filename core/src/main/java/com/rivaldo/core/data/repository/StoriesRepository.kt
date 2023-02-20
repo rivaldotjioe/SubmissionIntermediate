@@ -1,4 +1,4 @@
-package com.rivaldo.core.data.remote.repository
+package com.rivaldo.core.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

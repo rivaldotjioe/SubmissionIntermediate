@@ -6,7 +6,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.rivaldo.core.data.local.DataStorePreferences
-import com.rivaldo.core.data.remote.repository.StoriesRepository
+import com.rivaldo.core.data.repository.StoriesRepository
 import com.rivaldo.core.domain.interactor.HomeListStoryInteractor
 import com.rivaldo.core.domain.model.StoryModel
 import com.rivaldo.core.domain.repoInterface.IStoriesRepository

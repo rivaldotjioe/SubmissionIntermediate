@@ -13,12 +13,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.room.Room
 import com.rivaldo.core.data.Constant
 import com.rivaldo.core.data.local.DataStorePreferences
+import com.rivaldo.core.data.local.LocalDataSource
+import com.rivaldo.core.data.local.room.StoryDatabase
 import com.rivaldo.core.data.remote.api.ApiService
-import com.rivaldo.core.data.remote.repository.LoginRepository
-import com.rivaldo.core.data.remote.repository.RegisterRepository
-import com.rivaldo.core.data.remote.repository.StoriesRepository
+import com.rivaldo.core.data.repository.FavoriteRepository
+import com.rivaldo.core.data.repository.LoginRepository
+import com.rivaldo.core.data.repository.RegisterRepository
+import com.rivaldo.core.data.repository.StoriesRepository
+import com.rivaldo.core.domain.repoInterface.IFavoriteRepository
 import com.rivaldo.core.domain.repoInterface.ILoginRepository
 import com.rivaldo.core.domain.repoInterface.IRegisterRepository
 import com.rivaldo.core.domain.repoInterface.IStoriesRepository
@@ -43,12 +48,22 @@ val networkModule = module {
 }
 
 val localDataModule = module {
-    single <com.rivaldo.core.data.local.DataStorePreferences> { com.rivaldo.core.data.local.DataStorePreferences.getInstance(androidContext()) }
+    single <DataStorePreferences> { DataStorePreferences.getInstance(androidContext()) }
+    factory { get<StoryDatabase>().storyDao() }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            StoryDatabase::class.java, "Story.db"
+        ).fallbackToDestructiveMigration()
+            .build()
+    }
 }
 
 val repositoryModule = module {
     single { com.rivaldo.core.data.remote.api.RemoteDataSource(get()) }
+    single { LocalDataSource(get())}
     single<IRegisterRepository> { RegisterRepository(get()) }
     single<ILoginRepository> { LoginRepository(get()) }
     single<IStoriesRepository> { StoriesRepository(get(), get()) }
+    single<IFavoriteRepository> { FavoriteRepository(get()) }
 }

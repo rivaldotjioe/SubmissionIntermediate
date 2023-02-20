@@ -11,5 +11,5 @@ data class StoryModel(
     val description: String? = null,
     val lon: Float? = null,
     val id: String? = null,
-    val lat: Float? = null
+    val lat: Float? = null,
 ) : Parcelable

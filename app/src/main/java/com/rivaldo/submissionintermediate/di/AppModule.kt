@@ -4,6 +4,7 @@ package com.rivaldo.submissionintermediate.di
 import com.rivaldo.core.domain.interactor.*
 import com.rivaldo.core.domain.useCase.*
 import com.rivaldo.submissionintermediate.ui.addstory.AddStoryViewModel
+import com.rivaldo.submissionintermediate.ui.detail.DetailViewModel
 import com.rivaldo.submissionintermediate.ui.login.LoginViewModel
 import com.rivaldo.submissionintermediate.ui.main.MainViewModel
 import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsViewModel
@@ -31,6 +32,15 @@ val interactorModule = module {
     factory <RegisterUseCase> {
         RegisterInteractor(get())
     }
+
+    factory <FavoriteUseCase> {
+        FavoriteInteractor(get(), get())
+    }
+
+    factory <DetailUseCase> {
+        DetailInteractor(get())
+    }
+
 }
 
 val viewModelModule = module {
@@ -39,4 +49,5 @@ val viewModelModule = module {
     viewModel { MainViewModel(get()) }
     viewModel { AddStoryViewModel(get()) }
     viewModel { ListStoryMapsViewModel(get())}
+    viewModel { DetailViewModel(get()) }
 }

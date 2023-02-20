@@ -1,4 +1,4 @@
-package com.rivaldo.core.data.remote.repository
+package com.rivaldo.core.data.repository
 
 import com.rivaldo.core.data.remote.api.RemoteDataSource
 import com.rivaldo.core.domain.Resource

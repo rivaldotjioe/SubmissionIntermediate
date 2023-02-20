@@ -1,6 +1,7 @@
 package com.rivaldo.submissionintermediate.ui.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -73,6 +74,12 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.map -> {
                         val intent = Intent(this@MainActivity, ListStoryMapsActivity::class.java )
+                        startActivity(intent)
+                        return true
+                    }
+
+                    R.id.favorite_list -> {
+                        val intent = Intent(this@MainActivity, Class.forName("com.rivaldo.favorite.FavoriteActivity"))
                         startActivity(intent)
                         return true
                     }

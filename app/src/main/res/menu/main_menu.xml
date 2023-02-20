@@ -26,4 +26,12 @@
         android:iconTint="@color/white"
         app:iconifiedByDefault="true"
         />
+
+    <item
+        android:id="@+id/favorite_list"
+        android:title="Favorite List"
+        app:showAsAction="always|collapseActionView"
+        android:icon="@drawable/baseline_favorite_24"
+        android:iconTint="@color/white"
+        />
 </menu>

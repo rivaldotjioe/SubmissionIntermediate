@@ -6,6 +6,7 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rivaldo.core.domain.model.StoryModel
@@ -13,7 +14,7 @@ import com.rivaldo.submissionintermediate.databinding.ListStoryBinding
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.StoryViewHolder>() {
     lateinit var onItemClick: ((StoryModel, ActivityOptions) -> Unit)
-    var listStoryModel : List<StoryModel> = emptyList()
+    var listStoryModel = mutableListOf<StoryModel>()
 
     @JvmName("setOnItemClick1")
     fun setOnItemClick(onItemClick: (StoryModel, ActivityOptions) -> Unit) {
@@ -21,8 +22,11 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.StoryViewHolder>() 
     }
     @JvmName("setListStoryModel1")
     fun setListStoryModel(listStoryModel: List<StoryModel>) {
-        this.listStoryModel = listStoryModel
-        notifyDataSetChanged()
+        val diffCallback = FavoriteDiffCallback(this.listStoryModel, listStoryModel)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.listStoryModel.clear()
+        this.listStoryModel.addAll(listStoryModel)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class StoryViewHolder(val binding: ListStoryBinding) :

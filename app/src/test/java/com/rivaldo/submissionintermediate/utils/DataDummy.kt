@@ -1,6 +1,7 @@
 package com.rivaldo.submissionintermediate.utils
 
-import com.rivaldo.submissionintermediate.domain.model.StoryModel
+import com.rivaldo.core.domain.model.StoryModel
+
 
 object DataDummy {
     fun generateDummyStoryEntity(): List<StoryModel> {

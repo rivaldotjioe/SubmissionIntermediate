@@ -8,9 +8,11 @@ import com.rivaldo.core.data.remote.api.RemoteDataSource
 import com.rivaldo.core.data.remote.model.ListStoryItem
 import com.rivaldo.core.data.remote.model.ResponseStandard
 import com.rivaldo.core.domain.Resource
+import com.rivaldo.core.domain.model.StandardModel
 import com.rivaldo.core.domain.model.StoryModel
 import com.rivaldo.core.domain.repoInterface.IStoriesRepository
 import com.rivaldo.core.ui.StoryPagingSource
+import com.rivaldo.core.utils.DataMapper.toStandardModel
 import com.rivaldo.core.utils.DataMapper.toStoryModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,6 +31,7 @@ class StoriesRepository(val remoteDataSource: RemoteDataSource, val preferences:
                                 if (it != null) {
                                     emit(Resource.Success((it as List<ListStoryItem>).toStoryModel()))
                                 }
+
                             }
                         }
                         is com.rivaldo.core.data.remote.ApiResponse.Error -> {
@@ -90,7 +93,7 @@ class StoriesRepository(val remoteDataSource: RemoteDataSource, val preferences:
         token: String,
         description: RequestBody,
         image: MultipartBody.Part
-    ): Flow<Resource<ResponseStandard>> {
+    ): Flow<Resource<StandardModel>> {
         return flow {
             try {
                 remoteDataSource.addNewStories(
@@ -101,7 +104,7 @@ class StoriesRepository(val remoteDataSource: RemoteDataSource, val preferences:
                     when (response) {
                         is com.rivaldo.core.data.remote.ApiResponse.Success -> {
                             response.data?.let {
-                                emit(Resource.Success(it))
+                                emit(Resource.Success(it.toStandardModel()))
                             }
                         }
                         is com.rivaldo.core.data.remote.ApiResponse.Error -> {

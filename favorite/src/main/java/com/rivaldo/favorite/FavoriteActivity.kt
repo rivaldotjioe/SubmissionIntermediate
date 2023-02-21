@@ -1,5 +1,6 @@
 package com.rivaldo.favorite
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rivaldo.core.domain.Resource
 import com.rivaldo.favorite.databinding.ActivityFavoriteBinding
 import com.rivaldo.favorite.di.favoriteModule
+import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +31,13 @@ class FavoriteActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         binding.listFavoriteStory.adapter = adapter
         binding.listFavoriteStory.layoutManager = LinearLayoutManager(this)
+        adapter.setOnItemClick { storyModel, activityOptions ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.EXTRA_DATA, storyModel)
+            startActivity(
+                intent,
+                activityOptions.toBundle())
+        }
     }
 
     private fun getAllStoriesFavorite() {

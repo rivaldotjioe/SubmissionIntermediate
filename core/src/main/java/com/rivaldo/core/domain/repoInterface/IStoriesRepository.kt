@@ -3,6 +3,7 @@ package com.rivaldo.core.domain.repoInterface
 import androidx.paging.PagingData
 import com.rivaldo.core.data.remote.model.ResponseStandard
 import com.rivaldo.core.domain.Resource
+import com.rivaldo.core.domain.model.StandardModel
 import com.rivaldo.core.domain.model.StoryModel
 import com.rivaldo.core.ui.StoryPagingSource
 import kotlinx.coroutines.flow.Flow
@@ -18,5 +19,5 @@ interface IStoriesRepository {
 
     suspend fun getAllStoriesWithLocation(token: String) : Flow<Resource<List<StoryModel>>>
 
-    suspend fun addNewStory(token: String, description: RequestBody, image: MultipartBody.Part): Flow<Resource<ResponseStandard>>
+    suspend fun addNewStory(token: String, description: RequestBody, image: MultipartBody.Part): Flow<Resource<StandardModel>>
 }

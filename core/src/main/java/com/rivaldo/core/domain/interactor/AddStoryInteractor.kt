@@ -3,6 +3,7 @@ package com.rivaldo.core.domain.interactor
 import com.rivaldo.core.data.local.DataStorePreferences
 import com.rivaldo.core.data.remote.model.ResponseStandard
 import com.rivaldo.core.domain.Resource
+import com.rivaldo.core.domain.model.StandardModel
 import com.rivaldo.core.domain.repoInterface.IStoriesRepository
 import com.rivaldo.core.domain.useCase.AddStoryUseCase
 import kotlinx.coroutines.flow.Flow
@@ -17,5 +18,5 @@ class AddStoryInteractor(val repository: IStoriesRepository, val preferences: Da
         token: String,
         description: RequestBody,
         image: MultipartBody.Part
-    ): Flow<Resource<ResponseStandard>> = repository.addNewStory(token, description, image)
+    ): Flow<Resource<StandardModel>> = repository.addNewStory(token, description, image)
 }

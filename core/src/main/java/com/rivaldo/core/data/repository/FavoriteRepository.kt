@@ -18,7 +18,7 @@ class FavoriteRepository(val localDataSource: LocalDataSource) : IFavoriteReposi
                     if (list.isNotEmpty()) {
                         emit(Resource.Success(data = list.toStoryModel() ))
                     } else {
-                        emit(Resource.Error(message = "No List found"))
+                        emit(Resource.Success(data = emptyList()))
                     }
                 }
             } catch (e: Exception) {

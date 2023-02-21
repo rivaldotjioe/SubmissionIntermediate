@@ -12,6 +12,7 @@ object DataMapper {
 
     fun ResponseStandard?.toStandardModel(): StandardModel {
         return StandardModel(
+            error = this?.error,
             message = this?.message
         )
     }

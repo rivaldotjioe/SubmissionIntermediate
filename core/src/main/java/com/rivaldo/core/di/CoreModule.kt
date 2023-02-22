@@ -27,6 +27,8 @@ import com.rivaldo.core.domain.repoInterface.IFavoriteRepository
 import com.rivaldo.core.domain.repoInterface.ILoginRepository
 import com.rivaldo.core.domain.repoInterface.IRegisterRepository
 import com.rivaldo.core.domain.repoInterface.IStoriesRepository
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DataStorePreferences.PREFERENCES_NAME)
 val networkModule = module {
@@ -51,10 +53,13 @@ val localDataModule = module {
     single <DataStorePreferences> { DataStorePreferences.getInstance(androidContext()) }
     factory { get<StoryDatabase>().storyDao() }
     single {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("kenta".toCharArray())
+        val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
             StoryDatabase::class.java, "Story.db"
         ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
             .build()
     }
 }

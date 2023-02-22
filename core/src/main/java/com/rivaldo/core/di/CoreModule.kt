@@ -29,13 +29,21 @@ import com.rivaldo.core.domain.repoInterface.IRegisterRepository
 import com.rivaldo.core.domain.repoInterface.IStoriesRepository
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
+import okhttp3.CertificatePinner
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DataStorePreferences.PREFERENCES_NAME)
 val networkModule = module {
     single {
+        val hostname = "story-api.dicoding.dev"
+        val certificatePinner = CertificatePinner.Builder()
+            .add(hostname, "sha256/7Coq67wu+UKhLuqpfjezOTCK/xSH3Gmd69K9O5anOA4=")
+            .add(hostname, "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=")
+            .add(hostname, "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=")
+            .build()
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .connectTimeout(30, TimeUnit.SECONDS)
+            .certificatePinner(certificatePinner)
             .build()
     }
     single {

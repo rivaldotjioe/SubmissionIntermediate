@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.rivaldo.core.domain.Resource
 import com.rivaldo.submissionintermediate.databinding.ActivityRegisterBinding
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
@@ -27,24 +29,30 @@ class RegisterActivity : AppCompatActivity() {
                 viewModel.register(name, email, password).collect { response ->
                     when (response) {
                         is Resource.Success -> {
-                            Toast.makeText(
-                                this@RegisterActivity,
-                                "Register Success",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                            finish()
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@RegisterActivity,
+                                    "Register Success",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                                finish()
+                            }
                         }
                         is Resource.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(
-                                this@RegisterActivity,
-                                response.message ?: "Error",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            runOnUiThread {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(
+                                    this@RegisterActivity,
+                                    response.message ?: "Error",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
                         }
                         is Resource.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                            runOnUiThread { binding.progressBar.visibility = View.VISIBLE }
+
                         }
 
                     }

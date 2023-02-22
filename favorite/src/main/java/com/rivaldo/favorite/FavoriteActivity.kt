@@ -18,7 +18,7 @@ import org.koin.core.context.loadKoinModules
 class FavoriteActivity : AppCompatActivity() {
     lateinit var binding: ActivityFavoriteBinding
     private val viewModel: FavoriteViewModel by viewModel()
-    val adapter: FavoriteAdapter by lazy { FavoriteAdapter() }
+    private val adapter: FavoriteAdapter by lazy { FavoriteAdapter() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadKoinModules(favoriteModule)

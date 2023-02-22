@@ -3,8 +3,6 @@
 -keep,includedescriptorclasses interface net.sqlcipher.** { *; }
 
 
-## ---------------Begin: proguard configuration for RecyclerAdapter used In Favorite Module  ----------
--keep class com.rivaldo.core.ui.
 
 ##---------------Begin: proguard configuration for Gson ----------
 # Gson uses generic type information stored in a class file when working with fields. Proguard

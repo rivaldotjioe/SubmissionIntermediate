@@ -16,11 +16,8 @@ import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
 import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -112,6 +109,11 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onPause() {
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleScope.cancel()
     }
 
     private fun checkIsLogin() {

@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
     private fun onLogin(onLoginSuccess: (LoginModel) -> Unit, onLoginFailed: (String) -> Unit, onLoading: () -> Unit) {
         val email = binding.edLoginEmail.text.toString()
         val password = binding.edLoginPassword.text.toString()
-        viewModel.viewModelScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             viewModel.login(email = email, password = password).collect { resource ->
                 when(resource) {
                     is Resource.Success -> {

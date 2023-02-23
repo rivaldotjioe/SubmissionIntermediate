@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.rivaldo.core.domain.Resource
 import com.rivaldo.core.utils.compressFile
@@ -21,7 +22,9 @@ import com.rivaldo.core.utils.createCustomTempFile
 import com.rivaldo.core.utils.rotateBitmap
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityAddStoryBinding
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -48,10 +51,21 @@ class AddStoryActivity : AppCompatActivity() {
     private val launcherIntentCamera =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                getFile = compressFile(File(currentPhotoPath))
-                val result = rotateBitmap(BitmapFactory.decodeFile(getFile?.path), isBackCamera = true)
+                lateinit var result: Deferred<Bitmap>
+                lifecycleScope.launch(Dispatchers.Default) {
+                    getFile = compressFile(File(currentPhotoPath))
+                    result = async {
+                        rotateBitmap(
+                            BitmapFactory.decodeFile(getFile?.path),
+                            isBackCamera = true
+                        )
+                    }
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        binding.imageView.setImageBitmap(result.await())
+                    }
+                }
 
-                binding.imageView.setImageBitmap(result)
+
             }
         }
 
@@ -109,7 +123,7 @@ class AddStoryActivity : AppCompatActivity() {
                 file.name,
                 requestImageFile
             )
-            viewModel.viewModelScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.IO) {
                 viewModel.addNewStory(description = description, image = imageMultiPart)
                     .collect { resource ->
                         when (resource) {

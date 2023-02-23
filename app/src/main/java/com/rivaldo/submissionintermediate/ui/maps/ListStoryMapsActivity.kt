@@ -3,6 +3,7 @@ package com.rivaldo.submissionintermediate.ui.maps
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -47,7 +48,7 @@ class ListStoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         // Add a marker in Sydney and move the camera
-        viewModel.viewModelScope.launch {
+        lifecycleScope.launch {
             viewModel.getListStory().collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {

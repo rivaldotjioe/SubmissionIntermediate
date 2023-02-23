@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.rivaldo.core.domain.Resource
 import com.rivaldo.submissionintermediate.databinding.ActivityRegisterBinding
@@ -25,7 +26,7 @@ class RegisterActivity : AppCompatActivity() {
             val name = binding.edRegisterName.text.toString()
             val email = binding.edRegisterEmail.text.toString()
             val password = binding.edRegisterPassword.text.toString()
-            viewModel.viewModelScope.launch {
+            lifecycleScope.launch {
                 viewModel.register(name, email, password).collect { response ->
                     when (response) {
                         is Resource.Success -> {

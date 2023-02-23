@@ -1,7 +1,6 @@
 package com.rivaldo.submissionintermediate.ui.main
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rivaldo.submissionintermediate.R
 import com.rivaldo.submissionintermediate.databinding.ActivityMainBinding
@@ -18,8 +16,11 @@ import com.rivaldo.submissionintermediate.ui.addstory.AddStoryActivity
 import com.rivaldo.submissionintermediate.ui.detail.DetailActivity
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import com.rivaldo.submissionintermediate.ui.maps.ListStoryMapsActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -90,9 +91,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getListStory() {
-        viewModel.viewModelScope.launch(Dispatchers.IO) {
+       lifecycleScope.launch(Dispatchers.IO) {
             viewModel.storiesFlow.collectLatest {
-                rvAdapter.submitData(lifecycle, it)
+                runOnUiThread {
+                    rvAdapter.submitData(lifecycle, it)
+                }
+
             }
         }
     }
@@ -111,7 +115,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIsLogin() {
-        viewModel.viewModelScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             viewModel.checkIsLogin().collect { isLoggedIn ->
                 if (!isLoggedIn) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))

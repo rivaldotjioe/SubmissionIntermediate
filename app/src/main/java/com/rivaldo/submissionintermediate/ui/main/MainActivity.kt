@@ -133,12 +133,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        System.gc()
         (this as MenuHost).removeMenuProvider(menuProvider)
         lifecycleScope.cancel()
         lifecycleScope.coroutineContext.cancel()
         lifecycleScope.coroutineContext.cancelChildren()
+        System.gc()
     }
 
 

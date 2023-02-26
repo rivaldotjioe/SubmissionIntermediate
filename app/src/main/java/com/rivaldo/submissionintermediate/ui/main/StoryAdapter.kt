@@ -14,11 +14,10 @@ import com.rivaldo.core.domain.model.StoryModel
 import com.rivaldo.submissionintermediate.databinding.ListStoryBinding
 
 class StoryAdapter : PagingDataAdapter<StoryModel, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
-    lateinit var onItemClick: ((StoryModel, ActivityOptions) -> Unit)
-
+    lateinit var onItemClick: ((StoryModel, List<Pair<View, String>>) -> Unit)
 
     @JvmName("setOnItemClick1")
-    fun setOnItemClick(onItemClick: (StoryModel, ActivityOptions) -> Unit) {
+    fun setOnItemClick(onItemClick: (StoryModel, List<Pair<View, String>>) -> Unit) {
         this.onItemClick = onItemClick
     }
 
@@ -33,13 +32,16 @@ class StoryAdapter : PagingDataAdapter<StoryModel, StoryAdapter.StoryViewHolder>
             //bind photo
             itemView.setOnClickListener {
                 if (::onItemClick.isInitialized) {
+                    val listPair = mutableListOf<Pair<View, String>>()
+                    listPair.add(Pair.create(binding.ivItemPhoto as View, "photo"))
+                    listPair.add(Pair.create(binding.tvItemName as View, "name"))
                     val optionsCompat: ActivityOptions =
                         ActivityOptions.makeSceneTransitionAnimation(
                             itemView.context as Activity,
                             Pair.create(binding.ivItemPhoto as View, "photo"),
                             Pair.create(binding.tvItemName as View, "name")
                         )
-                    onItemClick(storyModel, optionsCompat)
+                    onItemClick(storyModel, listPair)
                 }
             }
         }

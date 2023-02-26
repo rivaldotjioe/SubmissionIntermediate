@@ -47,9 +47,14 @@ class StoryAdapter : PagingDataAdapter<StoryModel, StoryAdapter.StoryViewHolder>
         }
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val binding = ListStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return StoryViewHolder(binding)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
     }
 
 

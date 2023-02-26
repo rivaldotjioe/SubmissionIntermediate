@@ -1,7 +1,9 @@
 package com.rivaldo.submissionintermediate.utils
 
+import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.rivaldo.core.data.local.DataStorePreferences
@@ -20,7 +22,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class AppResource : Application() {
+class AppResource : Application(), Application.ActivityLifecycleCallbacks {
 
 
     override fun onCreate() {
@@ -46,6 +48,7 @@ class AppResource : Application() {
 
     }
 
+
     private suspend fun checkIsLogin(dataStorePreferences: DataStorePreferences) {
         val isLoggedIn = dataStorePreferences.getIsLoggedIn().first()
         if (isLoggedIn) {
@@ -53,5 +56,36 @@ class AppResource : Application() {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
         }
+    }
+
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        val dataStorePreferences = get<DataStorePreferences>()
+        runBlocking {
+            checkIsLogin(dataStorePreferences)
+        }
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+        TODO("Not yet implemented")
     }
 }

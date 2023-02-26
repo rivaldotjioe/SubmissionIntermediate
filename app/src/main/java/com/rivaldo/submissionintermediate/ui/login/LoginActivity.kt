@@ -11,6 +11,7 @@ import com.rivaldo.core.domain.model.LoginModel
 import com.rivaldo.submissionintermediate.databinding.ActivityLoginBinding
 import com.rivaldo.submissionintermediate.ui.main.MainActivity
 import com.rivaldo.submissionintermediate.ui.register.RegisterActivity
+import com.rivaldo.submissionintermediate.utils.AppResource
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,6 +29,13 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             onLogin(onLoginSuccess = { onSuccessLogin(it) }, onLoading = { onLoading() }, onLoginFailed = { onFailedLogin(it) });
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        val application =  this.application as AppResource
+        application.onActivityResumed(this)
     }
 
     private fun onLogin(onLoginSuccess: (LoginModel) -> Unit, onLoginFailed: (String) -> Unit, onLoading: () -> Unit) {

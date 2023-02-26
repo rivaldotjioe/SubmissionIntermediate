@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getListStory() {
        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.storiesFlow.collectLatest {
+            viewModel.storiesFlow.collect {
                 runOnUiThread {
                     rvAdapter.submitData(lifecycle, it)
                 }
@@ -129,8 +129,12 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
+
+        System.gc()
         (this as MenuHost).removeMenuProvider(menuProvider)
         lifecycleScope.cancel()
         lifecycleScope.coroutineContext.cancel()

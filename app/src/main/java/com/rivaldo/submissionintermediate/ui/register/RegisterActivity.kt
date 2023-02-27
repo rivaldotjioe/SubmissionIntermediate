@@ -11,16 +11,18 @@ import com.rivaldo.core.domain.Resource
 import com.rivaldo.submissionintermediate.databinding.ActivityRegisterBinding
 import com.rivaldo.submissionintermediate.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
-    lateinit var binding: ActivityRegisterBinding
+    private var _binding: ActivityRegisterBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: RegisterViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        _binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.btnRegister.setOnClickListener {
             val name = binding.edRegisterName.text.toString()
@@ -28,37 +30,42 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.edRegisterPassword.text.toString()
             lifecycleScope.launch {
                 viewModel.register(name, email, password).collect { response ->
-                    when (response) {
-                        is Resource.Success -> {
-                            withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
+                        when (response) {
+                            is Resource.Success -> {
                                 Toast.makeText(
-                                    this@RegisterActivity,
+                                    applicationContext,
                                     "Register Success",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                                finish()
+                                Intent(applicationContext, LoginActivity::class.java).also {
+                                    it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(it)
+                                }
                             }
-                        }
-                        is Resource.Error -> {
-                            runOnUiThread {
+                            is Resource.Error -> {
                                 binding.progressBar.visibility = View.GONE
                                 Toast.makeText(
-                                    this@RegisterActivity,
+                                    applicationContext,
                                     response.message ?: "Error",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                            is Resource.Loading -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
 
                         }
-                        is Resource.Loading -> {
-                            runOnUiThread { binding.progressBar.visibility = View.VISIBLE }
-
-                        }
-
                     }
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        viewModel.viewModelScope.cancel()
+        lifecycleScope.cancel()
     }
 }

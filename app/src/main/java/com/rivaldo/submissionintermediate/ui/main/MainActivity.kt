@@ -25,16 +25,19 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.unloadKoinModules
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
-    lateinit var menuProvider: MenuProvider
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+    private var _menuProvider: MenuProvider? = null
+    private val menuProvider get() = _menuProvider!!
     private val viewModel: MainViewModel by viewModel()
-    private val rvAdapter: StoryAdapter by lazy { StoryAdapter() }
-    private val linearLayoutManager: LinearLayoutManager by lazy { LinearLayoutManager(this) }
+    private val rvAdapter: StoryAdapter = StoryAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initializeRecyclerView()
         getListStory()
@@ -43,11 +46,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeRecyclerView() {
         binding.rvStory.apply {
-            layoutManager = linearLayoutManager
+            layoutManager = LinearLayoutManager(this@MainActivity)
             setHasFixedSize(false)
             this.adapter = rvAdapter
         }
-
         rvAdapter.setOnItemClick { storyModel, listPairView ->
             val intent = Intent(this@MainActivity, DetailActivity::class.java)
             intent.putExtra(DetailActivity.EXTRA_DATA, storyModel)
@@ -64,12 +66,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupMenu(){
-        menuProvider = object : MenuProvider {
+        _menuProvider = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
                 menuInflater.inflate(R.menu.main_menu, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.add_story -> {
